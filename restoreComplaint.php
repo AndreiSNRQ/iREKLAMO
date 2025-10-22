@@ -1,19 +1,23 @@
 <?php
+// Assuming database connection is in config.php
 require 'config.php';
 
-header('Content-Type: application/json');
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
-    $id = intval($_POST['id']);
+    $id = $_POST['id'];
+    
     try {
-        $stmt = $conn->prepare("UPDATE complaint SET status = 'active' WHERE id = ?");
+        // Update complaint status from 'archived' to 'active' (adjust based on your schema)
+        $query = "UPDATE complaint SET status = 'active' WHERE id = ?";
+        $stmt = $conn->prepare($query);
         $stmt->execute([$id]);
-
-        echo json_encode(["success" => true, "message" => "Complaint restored successfully."]);
-    } catch (Exception $e) {
-        echo json_encode(["success" => false, "message" => $e->getMessage()]);
+        
+        echo json_encode(['success' => true, 'message' => 'Complaint restored successfully']);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Failed to restore complaint: ' . $e->getMessage()]);
     }
+    
     exit;
 }
 
-echo json_encode(["success" => false, "message" => "Invalid request"]);
+echo json_encode(['success' => false, 'message' => 'Invalid request']);
+?>

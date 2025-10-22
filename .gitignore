@@ -1,0 +1,44 @@
+# .gitignore for iREKLAMO PHP project
+
+# Composer / PHP
+/vendor/
+/composer.lock
+/.phpunit.result.cache
+/.php_cs.cache
+/.php_cs.dist
+
+# Node
+/node_modules/
+/npm-debug.log
+/yarn-error.log
+
+# IDEs
+/.idea/
+/.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.*
+
+# Logs and caches
+/storage/
+bootstrap/cache/
+cache/
+
+# Temporary and editor files
+~$*
+*.tmp
+*.swp
+
+# OneDrive artifacts
+Desktop.ini
+
+# Project-specific generated or uploaded files
+print/files/
+pics/

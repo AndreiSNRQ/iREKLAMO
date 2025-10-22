@@ -23,7 +23,7 @@ require_once 'head.php';
   </div>
 <?php endif; ?>
 <?php try {
-        $stmt = $conn->prepare("SELECT id,c_name AS complainant, r_name AS respondent, details, date_time AS date, type, location, status , created_by FROM complaint WHERE status = 'active' ORDER BY id DESC");
+        $stmt = $conn->prepare("SELECT id,c_name AS complainant, c_address, c_contact, r_name AS respondent, r_address, r_contact, details, date_time AS date, type, location, status , created_by FROM complaint WHERE status = 'active' ORDER BY id DESC");
         $stmt->execute();
         $complaints = $stmt->fetchAll();
     } catch(PDOException $e) {
@@ -31,7 +31,7 @@ require_once 'head.php';
         $complaints = [];
     } ?>
 <?php try {
-        $stmt = $conn->prepare("SELECT id,c_name AS complainant, r_name AS respondent, details, date_time AS date, type, location, status , created_by FROM complaint WHERE status = 'archived'");
+        $stmt = $conn->prepare("SELECT id,c_name AS complainant, c_address, c_contact, r_name AS respondent, r_address, r_contact, details, date_time AS date, type, location, status , created_by FROM complaint WHERE status = 'archived'");
         $stmt->execute();
         $archivedcomplaints = $stmt->fetchAll();
     } catch(PDOException $e) {
@@ -88,7 +88,7 @@ require_once 'head.php';
                             <div class="flex items-center gap-2">
                                 <label for="complaintStatusFilter" class="font-semibold">Filter by Type:</label>
                                 <?php $incidentTypes = array_unique(array_map(fn($item) => $item['type'], $complaints)); sort($incidentTypes); ?>
-                                <select id="complaintStatusFilter" class="border border-gray-300 rounded px-3 py-2">
+                                <select id="complaintStatusFilter" class="border border-gray-300 rounded px-3 py-2" onchange="complaintStatusFilter()">
                                     <option value="all">All Types</option>
                                     <?php foreach ($incidentTypes as $type): ?>
                                         <option value="<?php echo strtolower($type); ?>"><?php echo $type; ?></option>
@@ -120,7 +120,7 @@ require_once 'head.php';
                         $currentPage = max(1, min($currentPage, $totalPages));
                         $offset = ($currentPage - 1) * $itemsPerPage;
                         $paginatedComplaints = array_slice($complaints, $offset, $itemsPerPage);
-                        foreach ($paginatedComplaints as $item): 
+                        foreach ($paginatedComplaints as $item):
                             if ($item['status'] == 'active'):?>
                         <tr class="hover:bg-gray-50">
                             <?php static $rowNum = 1; ?>
@@ -136,11 +136,15 @@ require_once 'head.php';
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo htmlspecialchars($itemDate); ?></td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo htmlspecialchars($item['location']); ?></td>
                             <td class="px-6 text-center md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                <button class="text-blue-600 hover:text-blue-900 mr-3 view-btn" 
+                                <button class="text-blue-600 hover:text-blue-900 mr-3 view-btn"
                                     data-item='<?= htmlspecialchars(json_encode([
                                         'id' => $item['id'],
                                         'complainant' => $item['complainant'],
+                                        'c_address' => $item['c_address'],
+                                        'c_contact' => $item['c_contact'],
                                         'respondent' => $item['respondent'],
+                                        'r_address' => $item['r_address'],
+                                        'r_contact' => $item['r_contact'],
                                         'type' => $item['type'],
                                         'details' => $item['details'],
                                         'date_time' => $item['date'],
@@ -150,11 +154,15 @@ require_once 'head.php';
                                     onclick="openViewModal(this)">
                                     <i class="fas fa-eye mr-1"></i>View
                                 </button>
-                                <button class="text-green-600 hover:text-green-900 edit-btn" 
+                                <button class="text-green-600 hover:text-green-900 edit-btn"
                                     data-item='<?= htmlspecialchars(json_encode([
                                         'id' => $item['id'],
                                         'complainant' => $item['complainant'],
+                                        'c_address' => $item['c_address'],
+                                        'c_contact' => $item['c_contact'],
                                         'respondent' => $item['respondent'],
+                                        'r_address' => $item['r_address'],
+                                        'r_contact' => $item['r_contact'],
                                         'type' => $item['type'],
                                         'details' => $item['details'],
                                         'date_time' => $item['date'],
@@ -165,22 +173,35 @@ require_once 'head.php';
                                     onclick="openEditModal(JSON.parse(this.getAttribute('data-item')))">
                                     <i class="fas fa-edit mr-1"></i>Edit
                                 </button>
-                                <button class="text-purple-600 hover:text-purple-900 print-btn" 
+                                <button class="text-purple-600 hover:text-purple-900 print-btn"
                                     data-item='<?= htmlspecialchars(json_encode([
                                         'id' => $item['id'],
                                         'complainant' => $item['complainant'],
+                                        'c_address' => $item['c_address'],
+                                        'c_contact' => $item['c_contact'],
                                         'respondent' => $item['respondent'],
+                                        'r_address' => $item['r_address'],
+                                        'r_contact' => $item['r_contact'],
                                         'type' => $item['type'],
                                         'details' => $item['details'],
                                         'date_time' => $item['date'],
                                         'location' => $item['location'],
                                         'created_by' => $item['created_by']
                                     ]), ENT_QUOTES, 'UTF-8') ?>'
-                                    onclick="const printModal = document.getElementById('printComplaintModal');
-                                        if (printModal && printModal.classList) {
-                                            printModal.classList.remove('hidden');
-                                        }
-                                        openPrintModal(JSON.parse(this.getAttribute('data-item')))">
+                                    onclick="openPrintModal(<?= htmlspecialchars(json_encode([
+                                        'id' => $item['id'],
+                                        'complainant' => $item['complainant'],
+                                        'c_address' => $item['c_address'],
+                                        'c_contact' => $item['c_contact'],
+                                        'respondent' => $item['respondent'],
+                                        'r_address' => $item['r_address'],
+                                        'r_contact' => $item['r_contact'],
+                                        'type' => $item['type'],
+                                        'details' => $item['details'],
+                                        'date_time' => $item['date'],
+                                        'location' => $item['location'],
+                                        'created_by' => $item['created_by']
+                                    ]), ENT_QUOTES, 'UTF-8') ?>)">
                                     <i class="fas fa-print mr-1"></i>Print
                                 </button>
                             </td>
@@ -190,189 +211,122 @@ require_once 'head.php';
                     </tbody>
                 </table>
             </div>
-            <div class="px-4 py-3 flex items-center justify-between border-t border-gray-200 bg-gray-50">
-                <div class="flex-1 flex justify-between sm:hidden">
-                    <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 <?php echo ($currentPage == 1) ? 'opacity-50 cursor-not-allowed' : ''; ?>">Previous</a>
-                    <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 <?php echo ($currentPage == $totalPages) ? 'opacity-50 cursor-not-allowed' : ''; ?>">Next</a>
-                </div>
-                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                    <p class="text-sm text-gray-700">
-                        Showing <span class="font-medium"><?php echo $offset + 1; ?></span> to <span class="font-medium"><?php echo min($offset + $itemsPerPage, $totalItems); ?></span> of <span class="font-medium"><?php echo $totalItems; ?></span> results
-                    </p>
-                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                            <a href="?page=<?php echo $i; ?>" class="relative inline-flex items-center px-4 py-2 border text-sm font-medium <?php echo ($i == $currentPage) ? 'bg-blue-50 border-blue-500 text-blue-600' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'; ?>">
-                                <?php echo $i; ?>
-                            </a>
-                        <?php endfor; ?>
-                    </nav>
-                </div>
-            </div>
         </div>
     </div>
-</div>
+  </div>
+    </main>
 
-<?php require 'printComplaintModal.php'; ?>
-<script>
-  const complaintStatusFilter = document.getElementById('complaintStatusFilter');
-  const complaintSearchInput = document.getElementById('complaintSearchInput');
-  const complaintTableBody = document.getElementById('complaintTableBody');
-
-  function filterComplaintTable() {
-    if (!complaintStatusFilter || !complaintSearchInput || !complaintTableBody) return;
-    
-    const filterValue = complaintStatusFilter.value.toLowerCase();
-    const searchTerm = complaintSearchInput.value.toLowerCase();
-
-    Array.from(complaintTableBody.getElementsByTagName('tr')).forEach(row => {
-      const typeCell = row.cells[3]?.textContent.toLowerCase();
-      const complainantCell = row.cells[1]?.textContent.toLowerCase();
-      const respondentCell = row.cells[2]?.textContent.toLowerCase();
-
-      const matchesFilter = filterValue === 'all' || typeCell === filterValue;
-      const matchesSearch = complainantCell?.includes(searchTerm) || respondentCell?.includes(searchTerm);
-
-      row.style.display = matchesFilter && matchesSearch ? '' : 'none';
-    });
-  }
-
-  if (complaintStatusFilter && complaintSearchInput && complaintTableBody) {
-    complaintStatusFilter.addEventListener('change', filterComplaintTable);
-    complaintSearchInput.addEventListener('input', filterComplaintTable);
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-  try {
-    // Check if elements exist before adding event listeners
-    const viewButtons = document.querySelectorAll(".view-btn");
-    if (viewButtons.length > 0) {
-      viewButtons.forEach(btn => {
-        if (btn) {
-          btn.addEventListener("click", function() {
-            try {
-              const item = JSON.parse(this.getAttribute('data-item'));
-              openViewModal(item);
-            } catch (e) {
-              console.error('Error parsing complaint data:', e);
+    <script>
+        function complaintStatusFilter() {
+            const filterValue = document.getElementById('complaintStatusFilter').value.toLowerCase();
+            const tableBody = document.getElementById('complaintTableBody'); // Corrected ID
+            if (!tableBody) {
+                console.error('Table body with ID "complaintTableBody" not found.');
+                return;
             }
-          });
-        }
-      });
-    }
 
-    const editButtons = document.querySelectorAll(".edit-btn");
-    if (editButtons.length > 0) {
-      editButtons.forEach(btn => {
-        if (btn) {
-          btn.addEventListener("click", function() {
-            try {
-              const item = JSON.parse(this.getAttribute('data-item'));
-              openEditModal(item);
-            } catch (e) {
-              console.error('Error parsing complaint data:', e);
+            const rows = tableBody.getElementsByTagName('tr');
+            const incidentTypeColumnIndex = 4; // Incident Type is the 5th column (0-indexed)
+
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const typeCell = row.getElementsByTagName('td')[incidentTypeColumnIndex];
+
+                if (typeCell) {
+                    const typeText = typeCell.textContent.trim().toLowerCase();
+
+                    if (filterValue === 'all' || typeText === filterValue) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
             }
-          });
         }
-      });
-    }
 
-    // Add null checks for filter elements
-    if (complaintStatusFilter && complaintStatusFilter.addEventListener) {
-      complaintStatusFilter.addEventListener('change', filterComplaintTable);
-    }
-    if (complaintSearchInput && complaintSearchInput.addEventListener) {
-      complaintSearchInput.addEventListener('input', filterComplaintTable);
-    }
-  } catch (e) {
-    console.error('Error initializing event listeners:', e);
-  }
-});
+        function openViewModal(button) {
+            const complaint = JSON.parse(button.getAttribute('data-item'));
 
-function openViewModal(complaint) {
-    // Ensure complaint data exists
-    if (!complaint) {
-        console.error('No complaint data provided');
-        return;
-    }
-    
-    // Populate all fields with complaint data
-    const viewComplaintId = document.getElementById("viewComplaintId");
-    const viewCName = document.getElementById("viewCName");
-    const viewRName = document.getElementById("viewRName");
-    const viewtype = document.getElementById("viewtype");
-    const viewlocation = document.getElementById("viewlocation");
-    const viewdetails = document.getElementById("viewdetails");
-    
-    if (viewComplaintId) viewComplaintId.value = complaint.id || '';
-    if (viewCName) viewCName.value = complaint.complainant || complaint.c_name || 'N/A';
-    if (viewRName) viewRName.value = complaint.respondent || complaint.r_name || 'N/A';
-    if (viewtype) viewtype.value = complaint.type || 'N/A';
-    if (viewlocation) viewlocation.value = complaint.location || 'N/A';
-    if (viewdetails) viewdetails.value = complaint.details || 'No details provided';
-    
-    // Show the modal with null check
-    const viewModal = document.getElementById("viewComplaintModal");
-    if (viewModal && viewModal.classList) {
-        viewModal.classList.remove("hidden");
-    }
-}
+            // Populate all fields with complaint data
+            const viewComplaintId = document.getElementById("viewComplaintId");
+            const viewCName = document.getElementById("viewCName");
+            const viewRName = document.getElementById("viewRName");
+            const viewtype = document.getElementById("viewtype");
+            const viewlocation = document.getElementById("viewlocation");
+            const viewdetails = document.getElementById("viewdetails");
 
-function openEditModal(item) {
-    const id = item.id || item.id;
-    const editComplaintId = document.getElementById('editComplaintId');
-    const editCName = document.getElementById('editCName');
-    const editRName = document.getElementById('editRName');
-    const editType = document.getElementById('editType');
-    const editLocation = document.getElementById('editLocation');
-    const editDetails = document.getElementById('editDetails');
-    const editStatus = document.getElementById('editStatus');
-    
-    if (editComplaintId) editComplaintId.value = id;
-    if (editCName) editCName.value = item.complainant || item.c_name || '';
-    if (editRName) editRName.value = item.respondent || item.r_name || '';
-    if (editType) editType.value = item.type || '';
-    if (editLocation) editLocation.value = item.location || '';
-    if (editDetails) editDetails.value = item.details || '';
-    if (editStatus) editStatus.value = item.status || 'active';
-    
-    const editModal = document.getElementById('editComplaintModal');
-    if (editModal && editModal.classList) {
-        editModal.classList.remove('hidden');
-    }
-}
+            if (viewComplaintId) viewComplaintId.value = complaint.id || '';
+            if (viewCName) viewCName.value = complaint.complainant || 'N/A';
+            if (viewRName) viewRName.value = complaint.respondent || 'N/A';
+            if (viewtype) viewtype.value = complaint.type || 'N/A';
+            if (viewlocation) viewlocation.value = complaint.location || 'N/A';
+            if (viewdetails) viewdetails.value = complaint.details || 'No details provided';
 
-function openPrintModal(item) {
-    const id = item.id || item.id;
-    const complainant = item.complainant || item.c_name || '';
-    const respondent = item.respondent || item.r_name || '';
-    const type = item.type || '';
-    const details = item.details || '';
-    const dateTime = item.date_time || item.date || '';
-    const location = item.location || '';
-
-    document.getElementById('printId').value = id;
-    document.getElementById('printComplainant').value = complainant;
-    document.getElementById('printRespondent').value = respondent;
-    document.getElementById('printType').value = type;
-    document.getElementById('printDetails').value = details;
-    document.getElementById('printDate').value = dateTime;
-    document.getElementById('printLocation').value = location;
-    
-    document.getElementById('modalComplainant').textContent = complainant;
-    document.getElementById('modalRespondent').textContent = respondent;
-    document.getElementById('modalType').textContent = type;
-    document.getElementById('modalDetails').textContent = details;
-    document.getElementById('modalLocation').textContent = location;
-    
-    if (dateTime) {
-        const d = new Date(dateTime);
-        if (!isNaN(d)) {
-            document.getElementById('modalDate').textContent = d.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
+            // Show the modal with null check
+            const viewModal = document.getElementById("viewComplaintModal");
+            if (viewModal && viewModal.classList) {
+                viewModal.classList.remove("hidden");
+            }
         }
-    }
-}
-</script>
+
+        function openEditModal(item) {
+            console.log("openEditModal called with item:", item);
+            const editComplaintId = document.getElementById('editComplaintId');
+            const editCName = document.getElementById('editCName');
+            const editRName = document.getElementById('editRName');
+            const editType = document.getElementById('editType');
+            const editLocation = document.getElementById('editLocation');
+            const editDetails = document.getElementById('editDetails');
+            const editStatus = document.getElementById('editStatus');
+
+            if (editComplaintId) editComplaintId.value = item.id || '';
+            if (editCName) editCName.value = item.complainant || '';
+            if (editRName) editRName.value = item.respondent || '';
+            if (editType) editType.value = item.type || '';
+            if (editLocation) editLocation.value = item.location || '';
+            if (editDetails) editDetails.value = item.details || '';
+            if (editStatus) editStatus.value = item.status || 'active';
+
+            const editModal = document.getElementById('editComplaintModal');
+            if (editModal && editModal.classList) {
+                editModal.classList.remove('hidden');
+            }
+        }
+
+        // Search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('complaintSearchInput');
+            if (searchInput) {
+                searchInput.addEventListener('keyup', function() {
+                    const filter = searchInput.value.toLowerCase();
+                    const tableBody = document.getElementById('complaintTableBody');
+                    if (!tableBody) return;
+
+                    const rows = tableBody.getElementsByTagName('tr');
+                    for (let i = 0; i < rows.length; i++) {
+                        const row = rows[i];
+                        const complainantCell = row.getElementsByTagName('td')[2]; // Complainant is the 3rd column (0-indexed)
+                        if (complainantCell) {
+                            const complainantText = complainantCell.textContent.toLowerCase();
+                            if (complainantText.includes(filter)) {
+                                row.style.display = '';
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Ensure the complaint status filter is reset to "All Types" on page load
+            const complaintStatusFilterElement = document.getElementById('complaintStatusFilter');
+            if (complaintStatusFilterElement) {
+                complaintStatusFilterElement.value = 'all';
+                complaintStatusFilter(); // Apply the filter
+            }
+        });
+
+    </script>
+    <?php include 'printComplaintModal.php'; ?>
+</body>
+</html>

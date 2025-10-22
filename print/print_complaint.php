@@ -13,7 +13,7 @@ $c_name = $_POST['c_name'];
 $r_name = $_POST['r_name'];
 $type = $_POST['type'];
 $details = $_POST['details'];
-$date = $_POST['date_time'];
+$date = $_POST['date']; // Changed from $_POST['date_time'] to $_POST['date']
 try {
     
     // Load Word template

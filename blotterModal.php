@@ -94,6 +94,18 @@ $result = $conn->query($sql_resolved);
                     <option value="Other">Other</option>
                 </select>
             </div>
+
+             <div class="mt-6 border-t pt-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Data Privacy Consent</h3>
+        <p class="text-sm text-gray-600 mb-4">
+            By submitting this form, you agree to the collection and processing of your personal data for the purpose of addressing your complaint, in accordance with the Data Privacy Act of 2012. Your information will be kept confidential and will only be used for official barangay purposes.
+        </p>
+        <div class="flex items-center">
+            <input type="checkbox" id="consent" name="consent" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+            <label for="consent" class="ml-2 block text-sm text-gray-900">I agree to the terms and conditions.</label>
+        </div>
+    </div>
+    
             <div class="flex justify-end pt-2">
                 <button type="button" onclick="document.getElementById('addBlotterModal').classList.add('hidden')" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg mr-2 transition-colors">Cancel</button>
                 <button type="submit" id="submitBlotterBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">Submit</button>
@@ -112,7 +124,7 @@ async function submitBlotterForm() {
     
     try {
         const formData = new FormData(form);
-        const response = await fetch('http://localhost/barangay/save_blotter.php', {
+        const response = await fetch('save_blotter.php', { // Changed URL to relative path
             method: 'POST',
             body: formData
         });

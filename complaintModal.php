@@ -4,7 +4,7 @@
         <div class="flex justify-between items-center mb-4 border-b pb-2">
             <h3 class="text-lg font-semibold">Select Input Method</h3>
             <button onclick="document.getElementById('inputMethodModal').classList.add('hidden')" 
-                    class="text-gray-500 hover:bg-gray-200 rounded-full p-2">
+class="text-gray-500 hover:bg-gray-200 rounded-full p-2">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -226,7 +226,7 @@ function nextQuestion() {
   if (currentQuestion < questions.length) {
     showQuestion();
   } else {
-    document.getElementById('questionSection').classList.add('hidden');
+document.getElementById('questionSection').classList.add('hidden');
     document.getElementById('voiceComplaintForm').classList.remove('hidden');
   }
 }
@@ -303,12 +303,46 @@ function submitVoiceComplaint() {
         alert('An error occurred while submitting the complaint');
     });
 }
+
+// Function to open the restore complaint modal
+function openRestoreModal(id, complainantName) {
+  document.getElementById('restoreComplaintId').value = id;
+  document.getElementById('restoreComplaintText').textContent = `Are you sure you want to restore this complaint by ${complainantName}?`;
+  document.getElementById('restoreComplaintModal').classList.remove('hidden');
+}
+
+// Example JavaScript function to open the edit modal (add/update this)
+function openEditModal(complaint) {
+  document.getElementById('editComplaintId').value = complaint.id;
+  document.getElementById('editCName').value = complaint.complainant; 
+  document.getElementById('editCAddress').value = complaint.c_address; // Corrected key
+  document.getElementById('editCContact').value = complaint.c_contact; // Corrected key
+  document.getElementById('editRName').value = complaint.respondent; 
+  document.getElementById('editRAddress').value = complaint.r_address; // Corrected key
+  document.getElementById('editRContact').value = complaint.r_contact; // Corrected key
+  document.getElementById('editType').value = complaint.type;
+  document.getElementById('editLocation').value = complaint.location;
+  document.getElementById('editDetails').value = complaint.details;
+  
+  // Format date_time for datetime-local input
+  const dateTime = new Date(complaint.date_time);
+  const year = dateTime.getFullYear();
+  const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
+  const day = dateTime.getDate().toString().padStart(2, '0');
+  const hours = dateTime.getHours().toString().padStart(2, '0');
+  const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+  document.getElementById('editDateTime').value = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+  document.getElementById('editStatus').value = complaint.status;
+  
+  document.getElementById('editComplaintModal').classList.remove('hidden');
+}
 </script>
 
 
 <!-- manual input form modal -->
 <div id="manualComplaintModal" class="hidden fixed inset-0 backdrop-blur-sm flex justify-center items-center z-50">
-    <div class="relative mx-auto p-6 w-[600px] shadow-lg rounded-lg bg-white animate-fade-in">
+    <div class="relative mx-auto p-6 w-full max-w-md shadow-lg rounded-lg bg-white animate-fade-in max-h-screen overflow-y-auto">
         <!-- Header -->
         <div class="flex justify-between items-center mb-4 border-b pb-2">
             <h3 class="text-lg font-semibold">Add New Complaint</h3>
@@ -355,7 +389,7 @@ function submitVoiceComplaint() {
                 </div>
             </div>
             <div>
-                <label for="r_address" class="block text-sm font-medium text-gray-600">Address</label>
+<label for="r_address" class="block text-sm font-medium text-gray-600">Address</label>
                 <input name="r_address" id="r_address" type="text" required
                     class="w-full border rounded px-2 py-1 focus:ring focus:ring-indigo-300 focus:outline-none">
             </div>
@@ -394,12 +428,26 @@ function submitVoiceComplaint() {
                 </select>
             </div>
 
+                    <!-- Consent Letter -->
+            <div class="mt-6 border-t pt-4">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Data Privacy Consent</h3>
+                <p class="text-sm text-gray-600 mb-4">
+                    By submitting this form, you agree to the collection and processing of your personal data for the purpose of addressing your complaint, in accordance with the Data Privacy Act of 2012. Your information will be kept confidential and will only be used for official barangay purposes.
+                </p>
+                <div class="flex items-center">
+                    <input type="checkbox" id="consent" name="consent" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                    <label for="consent" class="ml-2 block text-sm text-gray-900">I agree to the terms and conditions.</label>
+                </div>
+            </div>
+
+        
+
             <!-- Actions -->
             <div class="flex justify-end space-x-2">
-                <button type="button" onclick="document.getElementById('addComplaintModal').classList.add('hidden')" 
-                        class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium py-2 px-4 rounded">
-                    Cancel
-                </button>
+                <button type="button" onclick="window.location.href='complaints.php'" 
+        class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium py-2 px-4 rounded">
+    Cancel
+</button>
 
                 <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded" id="submitBtn">
                     Submit
@@ -428,13 +476,13 @@ if (complaintForm) {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
+if (data.success) {
                 alert('Complaint submitted successfully!');
                 document.getElementById('manualComplaintModal').classList.add('hidden');
                 location.reload(); // Refresh to show new complaint
             } else {
                 alert(data.message || 'Error submitting complaint');
-            }
+}
         })
         .catch(error => {
             console.error('Error:', error);
@@ -490,11 +538,11 @@ if (complaintForm) {
                         $date = $dateTime->format('m-d-Y');
                         $time = $dateTime->format('H:i');
                     ?>
-                    <td class="border-y border-gray-200 px-4 py-2"><?php echo htmlspecialchars($date); ?></td>
+<td class="border-y border-gray-200 px-4 py-2"><?php echo htmlspecialchars($date); ?></td>
                     <td class="border-y border-gray-200 px-4 py-2"><?php echo htmlspecialchars($archivedComplaint['status']); ?></td>
                     <td class="border-y border-gray-200 px-4 py-2">
-                        <button onclick="openRestoreModal(<?= $archivedComplaint['id'] ?>)" class="bg-green-600 text-white px-3 py-1 rounded">Restore</button>
-                        <button onclick="document.getElementById('viewArchivedViewModal').classList.remove('hidden'); openArchiveViewModal(<?= htmlspecialchars(json_encode($archivedComplaint)) ?>)" class="bg-indigo-600 text-white px-3 py-1 rounded">View</button>
+<button onclick="openRestoreModal(<?= $archivedComplaint['id'] ?>)" class="bg-green-600 text-white px-3 py-1 rounded">Restore</button>
+<button onclick="document.getElementById('viewArchivedViewModal').classList.remove('hidden'); openArchiveViewModal(<?= htmlspecialchars(json_encode($archivedComplaint)) ?>)" class="bg-indigo-600 text-white px-3 py-1 rounded">View</button>
                     </td>
                 </tr>
                 <?php
@@ -502,8 +550,8 @@ if (complaintForm) {
                 endforeach;
                 ?>
             </tbody>
-        </table>
-    </div>
+</table>
+</div>
 </div>
 
 <!-- Archive Complaints Modal -->
@@ -523,7 +571,7 @@ if (complaintForm) {
     <div class="flex items-center gap-3 mb-3">
       <label for="archiveMonth" class="font-medium text-sm">Filter by Month:</label>
       <input type="month" id="archiveMonth" class="border px-3 py-2 rounded" onchange="filterArchiveTable()">
-    </div>
+</div>
 
     <!-- Table -->
     <form id="archiveForm" action="archiveComplaint.php" method="POST">
@@ -535,14 +583,14 @@ if (complaintForm) {
               <th class="px-4 py-2">Case No.</th>
               <th class="px-4 py-2">Complainant</th>
               <th class="px-4 py-2">Respondent</th>
-              <th class="px-4 py-2">Type</th>
+<th class="px-4 py-2">Type</th>
               <th class="px-4 py-2">Date</th>
             </tr>
           </thead>
           <tbody id="archiveTableBody">
             <?php
             require 'config.php';
-            $stmt = $conn->query("SELECT id, c_name, r_name, type, date_time FROM complaint WHERE status='active'");
+$stmt = $conn->query("SELECT id, c_name, r_name, type, date_time FROM complaint WHERE status='active'");
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
               <tr class="border-b">
                 <td class="px-4 py-2">
@@ -570,7 +618,7 @@ if (complaintForm) {
         </button>
       </div>
     </form>
-  </div>
+</div>
 </div>
 
 <!-- View Archived Complaint Modal -->
@@ -593,7 +641,7 @@ if (complaintForm) {
       <div>
         <p class="mb-3"><span class="font-semibold">Barangay Case No.:</span>C- <span id="viewArchivedCaseNo" class="ml-2 text-gray-700"></span></p>
         <p><span class="font-semibold">For:</span> <span id="viewArchivedFor" class="ml-2 text-gray-700"></span></p>
-      </div>
+</div>
     </div>
 
     <!-- Title -->
@@ -645,7 +693,9 @@ if (complaintForm) {
 <div id="restoreComplaintModal" class="hidden fixed inset-0 backdrop-blur-sm w-full flex justify-center h-full">
   <div class="bg-white rounded-md shadow-lg w-fit h-fit p-6 relative border-gray-200 animate-fade-in border-2 mt-20">
     <h2 class="text-lg font-bold mb-4">Restore Complaint</h2>
-    <p id="restoreComplaintText" class="mb-4">Are you sure you want to restore this complaint by <?php echo htmlspecialchars($archivedComplaint['complainant'])?></p>
+    <p id="restoreComplaintText" class="mb-4">Are you sure you want to restore this complaint?</p>
+    <!-- Add this hidden input field -->
+    <input type="hidden" id="restoreComplaintId" name="id">
     <div class="flex justify-end gap-2">
       <button onclick="document.getElementById('restoreComplaintModal').classList.add('hidden')" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
       <button id="confirmRestoreBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Restore</button>
@@ -713,29 +763,36 @@ if (complaintForm) {
       <div class="grid grid-cols-2 gap-4">
         <!-- Complainant -->
         <div>
-          <label class="block text-sm font-medium text-gray-700">Complainant</label>
-          <input type="text" id="editCName" name="c_name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" disabled>
+          <label class="block text-sm font-medium text-gray-700">Complainant Name</label>
+          <input type="text" id="editCName" name="complainant_name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
         </div>
+        <!-- Respondent -->
         <div>
-          <label class="block text-sm font-medium text-gray-700">Respondent</label>
-          <input type="text" id="editRName" name="r_name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" disabled>
+          <label class="block text-sm font-medium text-gray-700">Respondent Name</label>
+          <input type="text" id="editRName" name="respondent_name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
         </div>
       </div>
 
       <div class="grid grid-cols-2 gap-4 mt-4">
         <div>
           <label class="block text-sm font-medium text-gray-700">Type</label>
-          <input type="text" id="editType" name="type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" disabled>
+          <input type="text" id="editType" name="type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700">Location</label>
-          <input type="text" id="editLocation" name="location" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" disabled>
+          <input type="text" id="editLocation" name="location" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
         </div>
       </div>
 
       <div class="mt-4">
         <label class="block text-sm font-medium text-gray-700">Details</label>
-        <textarea id="editDetails" name="details" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" disabled></textarea>
+        <textarea id="editDetails" name="details" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
+      </div>
+
+      <!-- Date & Time Field -->
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-700">Date & Time</label>
+        <input type="datetime-local" id="editDateTime" name="date_time" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
       </div>
 
       <!-- Editable Status -->
@@ -777,129 +834,59 @@ function showManualForm() {
   }
 }
 
-  // Filter by month
-  function filterArchiveTable() {
-    let month = document.getElementById('archiveMonth').value;
-    document.querySelectorAll('#archiveTableBody tr').forEach(row => {
-      let date = row.cells[5].textContent.trim().slice(0,7); // YYYY-MM
-      row.style.display = (!month || date === month) ? '' : 'none';
-    });
-  }
+function filterArchiveTable() {
+    var monthInput, typeInput, monthFilter, typeFilter, table, tr, tdMonth, tdType, i, monthTxtValue, typeTxtValue;
+    
+    monthInput = document.getElementById("archiveMonth");
+    monthFilter = monthInput.value; // e.g., "2023-10"
 
-function openEditModal(item) {
-  document.getElementById('editComplaintId').value = item.id;
-  document.getElementById('editCName').value = item.complainant;
-  document.getElementById('editRName').value = item.respondent;
-  document.getElementById('editType').value = item.type;
-  document.getElementById('editDetails').value = item.details;
-  document.getElementById('editLocation').value = item.location;
-  document.getElementById('editStatus').value = item.status;
+    typeInput = document.getElementById("archiveType");
+    typeFilter = typeInput.trim().toLowerCase(); // Trim and convert to lowercase
 
-  document.getElementById('editComplaintModal').classList.remove('hidden');
-}
+    table = document.getElementById("archiveTableBody");
+    tr = table.getElementsByTagName("tr");
 
-function closeEditModal() {
-  document.getElementById('editComplaintModal').classList.add('hidden');
-}
+    for (i = 0; i < tr.length; i++) {
+        // Date is in the 6th column (index 5)
+        tdMonth = tr[i].getElementsByTagName("td")[5]; 
+        // Type is in the 5th column (index 4)
+        tdType = tr[i].getElementsByTagName("td")[4];
 
+        var showRow = true;
 
-document.addEventListener("click", function (event) {
-    const modals = ["addComplaintModal", "archivedModal", "viewComplaintModal", "restoreComplaintModal"];
-    modals.forEach(id => {
-        const modal = document.getElementById(id);
-        if (modal && !modal.classList.contains("hidden") && event.target === modal) {
-            modal.classList.add("hidden");
+        if (tdMonth) {
+            monthTxtValue = tdMonth.textContent || tdMonth.innerText;
+            var rowMonth = monthTxtValue.substring(0, 7); // "YYYY-MM"
+            if (monthFilter !== "" && rowMonth !== monthFilter) {
+                showRow = false;
+            }
+        } else {
+            showRow = false; // Hide row if date column is missing
         }
-    });
-});
 
-let restoreComplaintId = null;
-
-
-
-function openArchiveViewModal(complaint) {
-    if (!complaint) {
-        console.error('No complaint data provided');
-        return;
-    }
-    
-    // Populate all fields with complaint data
-    document.getElementById("viewArchivedComplainant").textContent = complaint.complainant || complaint.c_name || 'N/A';
-    document.getElementById("viewArchivedRespondent").textContent = complaint.respondent || complaint.r_name || 'N/A';
-    document.getElementById("viewArchivedCaseNo").textContent = complaint.id || '';
-    document.getElementById("viewArchivedFor").textContent = complaint.type || 'N/A';
-    document.getElementById("viewArchivedComplaintDetails").textContent = complaint.details || 'No details provided';
-    
-    // Handle date formatting
-    if (complaint.date_time) {
-        const date = new Date(complaint.date_time);
-        document.getElementById("viewArchivedDay").textContent = date.getDate();
-        document.getElementById("viewArchivedMonth").textContent = date.toLocaleString('default', { month: 'long' });
-    } else if (complaint.date) {
-        const date = new Date(complaint.date);
-        document.getElementById("viewArchivedDay").textContent = date.getDate();
-        document.getElementById("viewArchivedMonth").textContent = date.toLocaleString('default', { month: 'long' });
-    } else {
-        document.getElementById("viewArchivedDay").textContent = 'N/A';
-        document.getElementById("viewArchivedMonth").textContent = 'N/A';
-    }
-    
-    document.getElementById("viewArchivedCreatedBy").textContent = complaint.created_by || 'N/A';
-    document.getElementById("viewArchivedComplainantFooter").textContent = complaint.complainant || complaint.c_name || 'N/A';
-    document.getElementById("viewArchivedControlNo").textContent = 'C-' + (complaint.id || '');
-    
-    // Show the modal
-    document.getElementById("viewArchivedViewModal").classList.remove("hidden");
-}
-
-function openRestoreModal(id) {
-    restoreComplaintId = id;
-    document.getElementById("restoreComplaintText").textContent =
-        "Are you sure you want to restore complaint #" + id + "?";
-    document.getElementById("restoreComplaintModal").classList.remove("hidden");
-}
-
-document.getElementById("confirmRestoreBtn").addEventListener("click", function() {
-    if (!restoreComplaintId) return;
-    fetch("restoreComplaint.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: "id=" + restoreComplaintId
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.message);
-        if (data.success) location.reload();
-    });
-});
-
-document.addEventListener("click", function (event) {
-    if (!event || !event.target) return;
-
-    const modals = [
-        "inputMethodModal",
-        "voiceComplaintModal",
-        "manualComplaintModal",
-        "archivedModal",
-        "addArchivedModal",
-        "viewArchivedViewModal",
-        "viewComplaintModal",
-        "restoreComplaintModal",
-        "editComplaintModal"
-    ];
-    modals.forEach(id => {
-        const modal = document.getElementById(id);
-        if (modal && modal.classList && !modal.classList.contains("hidden") && event.target === modal) {
-            modal.classList.add("hidden");
+        if (tdType) {
+            typeTxtValue = (tdType.textContent || tdType.innerText).trim().toLowerCase(); // Trim and convert to lowercase
+            if (typeFilter !== "" && typeTxtValue !== typeFilter) {
+                showRow = false;
+            }
+        } else {
+            showRow = false; // Hide row if type column is missing
         }
-    });
-}); 
+        
+        if (showRow) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+    }
+}
 
 // Handle edit form submission
 const editForm = document.getElementById('editComplaintForm');
 if (editForm) {
     editForm.addEventListener('submit', function(e) {
         e.preventDefault();
+        console.log('Edit form submitted.'); // Debug: Form submission detected
         
         fetch(this.action, {
             method: 'POST',
@@ -907,8 +894,48 @@ if (editForm) {
         })
         .then(res => res.json())
         .then(data => {
+            console.log('Server response:', data); // Debug: Log server response
             if (data.success) {
-                location.reload();
+                const complaintId = document.getElementById('editComplaintId').value;
+                const tableBody = document.getElementById('complaintTableBody');
+                console.log('Complaint ID:', complaintId); // Debug: Log complaint ID
+                console.log('Table Body found:', tableBody); // Debug: Check if tableBody is found
+
+                if (tableBody) {
+                    const rows = tableBody.getElementsByTagName('tr');
+                    let rowFound = false;
+                    for (let i = 0; i < rows.length; i++) {
+                        const row = rows[i];
+                        const caseNumberCell = row.cells[1]; 
+                        if (caseNumberCell && caseNumberCell.textContent.trim() === `C-${complaintId}`) {
+                            rowFound = true;
+                            console.log('Row found for Complaint ID:', complaintId, row); // Debug: Log the found row
+
+                            const newStatus = document.getElementById('editStatus').value;
+                            console.log('New Status:', newStatus); // Debug: Log the new status
+
+                            if (newStatus === 'archived') {
+                                // If status is archived, remove the row from the table
+                                row.remove();
+                                console.log('Row removed due to archived status.');
+                            } else {
+                                // Update the row with new data from the form
+                                row.cells[2].textContent = document.getElementById('editCName').value; // Complainant
+                                row.cells[3].textContent = document.getElementById('editRName').value; // Respondent
+                                row.cells[4].textContent = document.getElementById('editType').value; // Incident Type
+                                row.cells[6].textContent = document.getElementById('editLocation').value; // Incident Location
+                                console.log('Row content updated.');
+                            }
+                            break;
+                        }
+                    }
+                    if (!rowFound) {
+                        console.log('No matching row found in the table for Complaint ID:', complaintId);
+                    }
+                }
+
+                document.getElementById('editComplaintModal').classList.add('hidden');
+                alert(data.message); // Display success message
             } else {
                 alert(data.message || 'Error updating complaint');
             }
@@ -919,4 +946,52 @@ if (editForm) {
         });
     });
 }
+
+// Function to open the restore complaint modal
+function openRestoreModal(id) {
+  document.getElementById('restoreComplaintId').value = id;
+  document.getElementById('restoreComplaintModal').classList.remove('hidden');
+}
+
+// Function to open the archive view modal
+function openArchiveViewModal(id) {
+  // In a real application, you would fetch the archived complaint details using the ID
+  // and populate the viewArchivedViewModal with that data.
+  // For now, we'll just show the modal and set a placeholder ID.
+  document.getElementById('viewArchivedComplaintId').textContent = id; // Assuming you have an element to display the ID
+  document.getElementById('viewArchivedViewModal').classList.remove('hidden');
+}
+
+// Handle restore complaint confirmation
+const confirmRestoreBtn = document.getElementById('confirmRestoreBtn');
+if (confirmRestoreBtn) {
+    confirmRestoreBtn.addEventListener('click', function() {
+        const complaintId = document.getElementById('restoreComplaintId').value;
+        
+        fetch('restoreComplaint.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `id=${complaintId}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                document.getElementById('restoreComplaintModal').classList.add('hidden');
+                // Optionally, refresh the page or remove the row from the archived table
+                location.reload(); // This will refresh the page to show the updated status
+            } else {
+                alert(data.message || 'Error restoring complaint');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while restoring the complaint');
+        });
+    });
+}
 </script>
+</body>
+</html>

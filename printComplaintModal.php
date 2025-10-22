@@ -70,6 +70,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label class="block text-gray-700 text-sm font-bold mb-2">Incident Date</label>
                         <p class="text-gray-700" id="modalDate"></p>
                     </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Month</label>
+                        <p class="text-gray-700" id="modalMonth"></p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Day</label>
+                        <p class="text-gray-700" id="modalDay"></p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Year</label>
+                        <p class="text-gray-700" id="modalYear"></p>
+                    </div>
                 </div>
                 
                 <div class="mb-4">
@@ -126,6 +138,11 @@ function openPrintModal(item) {
             document.getElementById('modalDay').textContent = d.getDate();
             document.getElementById('modalYear').textContent = d.getFullYear();
         }
+    }
+
+    const printModal = document.getElementById('printComplaintModal');
+    if (printModal && printModal.classList) {
+        printModal.classList.remove('hidden');
     }
 }
 </script>

@@ -1,4 +1,5 @@
 <?php
+header('Access-Control-Allow-Origin: http://localhost:8000'); // Add this line
 include 'config.php';
 header('Content-Type: application/json');
 
