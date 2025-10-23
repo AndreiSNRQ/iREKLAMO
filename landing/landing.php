@@ -35,30 +35,33 @@ $announcement=[
 <body class="bg-gray-100">
     <div class="container grid h-screen max-w-screen">
         <!-- header -->
-        <header class="row-span-1 h-20 sticky top-0 shadow-xs bg-white border-b border-gray-200 flex items-center justify-between px-5">
+        <header class="row-span-1 h-25  sticky top-0 z-50 shadow-xs bg-blue-900 flex items-center justify-between px-5">
             <div>
-                <h1 class="text-2xl font-bold text-gray-800">iREKLAMO+</h1>
-                <hr>
-                <h1 class="text-sm text-gray-600">Barangay Sta. Monica</h1>
+                <h1 class="text-2xl font-bold text-white">iREKLAMO+</h1>
+            </div>
+            <div class="flex items-center">
             </div>
             <?php include 'nav.php'; ?>
-            <div class="flex items-center">
-                <a href="../login.php" class="text-gray-600 hover:text-gray-800 px-2 py-1 rounded-md hover:bg-gray-200 cursor-pointer">Login</a>
-            </div>
         </header>
         
         <!-- content -->
-        <div class="min-h-full items-start w-full grid gap-4">
+        <div class="min-h-full items-start w-full grid gap-4 ">
             <!-- Announcement Slider -->
-            <div class="py-3 px-4">
-                <h1 class="text-2xl font-semibold text-gray-600 mb-2">Latest Announcements:</h1>
+            <div class="">
                 <div class="relative overflow-hidden">
-                    <div class="flex transition-transform duration-500 ease-in-out" id="announcement-slider">
+                    <img class="w-full h-180 object-cover" src="pics/qc3.jpg" alt="">
+                </div>
+            </div>
+            <!-- Announcement Slider -->
+            <div class="px-4">
+                <h1 class="text-4xl font-semibold mb-2">Announcements:</h1>
+                <div class="relative overflow-hidden">
+                    <div class="flex transition-transform duration-500 ease-in-out h-100" id="announcement-slider">
                         <?php foreach($announcement as $item): ?>
-                        <div class="w-full flex-shrink-0 px-10 py-4 bg-white rounded-md shadow-lg">
-                            <h3 class="text-lg font-semibold"><?php echo $item['title']; ?></h3>
-                            <p class="text-gray-600"><?php echo $item['description']; ?></p>
-                            <p class="text-sm text-gray-500 mt-2"><?php echo $item['date']; ?></p>
+                        <div class="w-full flex-shrink-0 px-10 py-10 bg-blue-900 rounded-md shadow-lg">
+                            <h3 class="text-lg font-semibold text-white"><?php echo $item['title']; ?></h3>
+                            <p class="text-gray-600 text-white"><?php echo $item['description']; ?></p>
+                            <p class="text-sm text-gray-500 mt-2 text-white"><?php echo $item['date']; ?></p>
                         </div>
                         <?php endforeach; ?>
                     </div>
@@ -84,27 +87,23 @@ $announcement=[
                 </div>
             </div>
         </div>
-        
-        <!-- footer -->
-        <footer class="row-span-1 h-12 bg-white border-t shadow-xs sticky bottom-0 border-gray-200 flex items-center justify-center">
-            <p class="text-gray-600">&copy; 2025 iREKLAMO+. All rights reserved.</p>
-        </footer>
-    </div>
 
-    <!-- Manual Complaint Modal -->
-    <div id="manualComplaintModal" class="hidden fixed inset-0 z-50 backdrop-blur-sm flex items-center justify-center">
-        <div class="relative mx-auto p-5 border w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-lg rounded-md bg-white">
-            <div class="flex justify-between items-center mb-4 border-b pb-2">
-                <h3 class="text-xl font-bold text-gray-900">File a Complaint</h3>
-                <button onclick="hideManualForm()" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times text-lg"></i>
-                </button>
-            </div>
-            <div class="mt-3">
-                <?php include 'complaint-form.php'; ?>
+        <!-- Manual Complaint Modal -->
+        <div id="manualComplaintModal" class="hidden fixed inset-0 z-50 backdrop-blur-sm flex items-center justify-center">
+            <div class="relative mx-auto p-5 border w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-lg rounded-md bg-white">
+                <div class="flex justify-between items-center mb-4 border-b pb-2">
+                    <h3 class="text-xl font-bold text-gray-900">Make an Appointment</h3>
+                    <button onclick="hideManualForm()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+                <div class="mt-3">
+                    <?php include 'complaint-form.php'; ?>
+                </div>
             </div>
         </div>
     </div>
+
 
     <script>
         function showManualForm() {

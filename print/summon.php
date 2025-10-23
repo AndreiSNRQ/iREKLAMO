@@ -27,8 +27,20 @@ if ($id && $day && $month && $year && $time) {
     }
     
     // Update blotter status to 'summon'
-    $updateStmt = $conn->prepare("UPDATE blotter SET status = 'summon' WHERE id = ?");
-    $updateStmt->execute([$id]);
+    $stmt = $conn->prepare("SELECT status FROM blotter WHERE id = ?");
+    $stmt->execute([$id]);
+    $currentStatus = $stmt->fetchColumn();
+
+    if ($currentStatus === 'summon') {
+        $updateStmt = $conn->prepare("UPDATE blotter SET status = 'summon 2' WHERE id = ?");
+        $updateStmt->execute([$id]);
+    } elseif ($currentStatus === 'summon 2') {
+        $updateStmt = $conn->prepare("UPDATE blotter SET status = 'summon 3' WHERE id = ?");
+        $updateStmt->execute([$id]);
+    } else {
+        $updateStmt = $conn->prepare("UPDATE blotter SET status = 'summon' WHERE id = ?");
+        $updateStmt->execute([$id]);
+    }
     
     $c_name = $blotter['c_name'];
     $r_name = $blotter['r_name'];

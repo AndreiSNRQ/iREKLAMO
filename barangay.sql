@@ -63,7 +63,7 @@ CREATE TABLE `blotter` (
   `details` varchar(255) NOT NULL,
   `location` varchar(255) NOT NULL,
   `date_time` datetime NOT NULL,
-  `status` enum('pending','summon','1st trial','2nd trial','3rd trial','cfa','withdraw','resolved') NOT NULL DEFAULT 'pending',
+  `status` enum('pending','summon','summon 2','summon 3','1st trial','2nd trial','3rd trial','cfa','withdraw','resolved') NOT NULL DEFAULT 'pending',
   `created_by` int(11) DEFAULT NULL,
   `updated_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

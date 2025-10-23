@@ -8,11 +8,11 @@
         <!-- Blotter Service -->
         <div class="bg-white rounded-md shadow-lg p-6">
             <div class="flex items-center gap-4 mb-4">
-                <i class="fa-solid fa-scale-balanced text-3xl text-blue-900"></i>
+                <i class="fa-solid fa-scale-balanced text-3xl text-green-700"></i>
                 <h3 class="text-lg font-semibold">Barangay Blotter</h3>
             </div>
             <p class="text-gray-600 mb-4">View reported incidents and blotter records for Barangay Sta. Monica.</p>
-            <button onclick="openAdminOnlyModal()" class="bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-blue-700 inline-block">Open Blotter</button>
+            <button onclick="openAdminOnlyModal()" class="bg-green-700 text-white px-4 py-2 rounded-md hover:bg-green-700 inline-block">Open Blotter</button>
         </div>
 
         <!-- Complaint Service -->
