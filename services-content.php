@@ -1,28 +1,28 @@
 <?php
 // services-content.php - This contains only the services content
 ?>
-<div class="py-3 px-10">
+<div class="py-3 px-10 rounded-sm">
     <h1 class="text-2xl font-semibold text-gray-600 mb-2">Our Services:</h1>
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
         <!-- Blotter Service -->
-        <div class="bg-white rounded-md shadow-lg p-6">
+        <div class="bg-white rounded-md shadow-lg py-20 px-10">
             <div class="flex items-center gap-4 mb-4">
-                <i class="fa-solid fa-scale-balanced text-3xl text-green-700"></i>
-                <h3 class="text-lg font-semibold">Barangay Blotter</h3>
+                <i class="fa-solid fa-scale-balanced text-3xl"></i>
+                <h3 class="text-4xl font-semibold">Barangay Blotter</h3>
             </div>
-            <p class="text-gray-600 mb-4">View reported incidents and blotter records for Barangay Sta. Monica.</p>
-            <button onclick="openAdminOnlyModal()" class="bg-green-700 text-white px-4 py-2 rounded-md hover:bg-green-700 inline-block">Open Blotter</button>
+            <p class="text-gray-600 text-xl mb-4">View reported incidents and blotter records for Barangay Sta. Monica.</p>
+            <button onclick="openAdminOnlyModal()" class="bg-gray-400 hover:bg-gray-700 text-xl text-white px-4 py-2 rounded-md hover:bg-blue-700 inline-block">Open Blotter</button>
         </div>
 
         <!-- Complaint Service -->
-        <div class="bg-white rounded-md shadow-lg p-6">
+        <div class="bg-white rounded-md shadow-lg py-20 px-10">
             <div class="flex items-center gap-4 mb-4">
-                <i class="fa-solid fa-file-pen text-3xl text-green-700"></i>
-                <h3 class="text-lg font-semibold">Complaint System</h3>
+                <i class="fa-solid fa-file-pen text-3xl"></i>
+                <h3 class="text-4xl font-semibold">Complaint Request</h3>
             </div>
-            <p class="text-gray-600 mb-4">File a complaint or follow up on an existing complaint with barangay officials.</p>
-            <button onclick="openInputMethodModal()" class="bg-green-700 text-white px-4 py-2 rounded-md hover:bg-green-600 inline-block">Make a Complaint</button>
+            <p class="text-gray-600 text-xl mb-4">File a complaint or follow up on an existing complaint with barangay officials.</p>
+            <button onclick="openInputMethodModal()" class="bg-gray-400 text-white text-xl px-4 py-2 rounded-md hover:bg-gray-700 inline-block">Make a Complaint</button>
         </div>
     </div>
 </div>

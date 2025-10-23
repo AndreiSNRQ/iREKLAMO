@@ -1,3 +1,3 @@
 <?php
-    include 'landing/landing.php';
+    include 'landing.php';
 ?>

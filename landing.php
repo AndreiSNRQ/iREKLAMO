@@ -3,23 +3,21 @@ $title = "Barangay Sta. Monica";
 
 $announcement=[
     [
+
         "id"=>1,
+        "img"=>"pics/announce.jpg",
         "date"=>"2025-01-01",
         "title"=>"Resident Registration",
         "description"=>"The resident registration is scheduled for tomorrow at 7:00 PM. Please arrive by 6:00 PM."
     ],
     [
         "id"=>2,
+        "img"=>"pics/announce1.jpg",
         "date"=>"2025-01-02",
         "title"=>"eServices",
         "description"=>"The eServices is now available. You can access it by clicking the eServices."
     ],
-    [
-        "id"=>3,
-        "date"=>"2025-01-03",
-        "title"=>"Barangay-wide Meeting",
-        "description"=>"The barangay-wide meeting is scheduled for tomorrow at 7:00 PM. Please arrive by 6:00 PM."
-    ]
+
 ];
 ?>
 <!DOCTYPE html>
@@ -32,44 +30,56 @@ $announcement=[
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
+
+<style>
+
+</style>
 <body class="bg-gray-100">
     <div class="container grid h-screen max-w-screen">
-        <!-- header -->
-        <header class="row-span-1 h-25  sticky top-0 z-50 shadow-xs bg-blue-900 flex items-center justify-between px-5">
-            <div>
-                <h1 class="text-2xl font-bold text-white">iREKLAMO+</h1>
-            </div>
-            <div class="flex items-center">
-            </div>
-            <?php include 'nav.php'; ?>
-        </header>
         
         <!-- content -->
-        <div class="min-h-full items-start w-full grid gap-4 ">
+        <div class="min-h-full items-start w-full grid gap-4">
             <!-- Announcement Slider -->
-            <div class="">
-                <div class="relative overflow-hidden">
-                    <img class="w-full h-180 object-cover" src="pics/qc3.jpg" alt="">
+            <div class="bg-[url('pics/qc.jpg')] bg-cover bg-center bg-blend-multiply bg-gray-400">
+                <!-- header -->
+                <header class="row-span-1 min-h-29 sticky top-0 z-50 bg-transparent flex items-center justify-between px-5 ">
+                    <div>
+                        <h1 class="text-4xl font-bold text-white">iREKLAMO+</h1>
+                    </div>
+
+                    <div class="flex items-center">
+                        <?php include 'navlanding.php'; ?>
+                    </div>
+                </header>
+                <div class="flex justify-center items-center text-center py-20">
+                    <div class="mr-5">
+                        <img src="pics/brgylogo.png" alt="Barangay Sta. Monica" class="w-full h-auto rounded-md shadow-md max-h-45 min-h-45">
+                    </div>
+                    <div>
+                        <h1 class="text-4xl font-bold text-white">Barangay Sta. Monica </h1><span class="text-2xl font-semibold text-white">Moises St., Jordan Plaines Subd., Brgy Sta.Monica Novaliches, QC</span>
+                    </div>
+                    <div class=" ml-5">
+                        <img src="pics/brgy.jpg" alt="Quezon City" class="w-full max-h-35 min-h-35 rounded-md shadow-md">
+                    </div>
                 </div>
+                
             </div>
             <!-- Announcement Slider -->
-            <div class="px-4">
-                <h1 class="text-4xl font-semibold mb-2">Announcements:</h1>
-                <div class="relative overflow-hidden">
-                    <div class="flex transition-transform duration-500 ease-in-out h-100" id="announcement-slider">
+            <div class="px-20">
+                <h1 class="text-2xl font-semibold text-black text-center">Announcements:</h1>
+                <div class="relative overflow-hidden shadow-lg inset-shadow-sm rounded-md border-gray-600 bg-white">
+                    <div class="flex transition-transform duration-1000 ease-in-out min-h-100" id="announcement-slider">
                         <?php foreach($announcement as $item): ?>
-                        <div class="w-full flex-shrink-0 px-10 py-10 bg-blue-900 rounded-md shadow-lg">
-                            <h3 class="text-lg font-semibold text-white"><?php echo $item['title']; ?></h3>
-                            <p class="text-gray-600 text-white"><?php echo $item['description']; ?></p>
-                            <p class="text-sm text-gray-500 mt-2 text-white"><?php echo $item['date']; ?></p>
+                        <div class="w-full flex-shrink-0 px-15 py-8 flex flex-col justify-center items-center text-center">
+                           <a href="https://www.facebook.com/barangay.stamonica.3"> <img src="<?php echo $item['img']; ?>" alt="Announcement Image" class="w-full max-w-3xl h-full h-auto object-cover rounded-md mb-4 shadow-md" /></a>
                         </div>
                         <?php endforeach; ?>
                     </div>
-                    <button class="absolute left-2 top-1/2 transform -translate-y-1/2 rounded-full" id="prev-btn">
-                        <i class="fa-solid fa-circle-arrow-left text-2xl hover:text-gray-800" style="color: #8787879d;"></i>
+                    <button class="absolute px-3 h-full top-1/2 transform -translate-y-1/2 bg-transparent hover:bg-gray-100" id="prev-btn">
+                        <i class="  fa-solid fa-circle-arrow-left text-4xl hover:text-gray-700 text-gray-600"></i>
                     </button>
-                    <button class="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-full" id="next-btn">
-                        <i class="fa-solid fa-circle-arrow-right text-2xl hover:text-gray-800" style="color: #8787879d;"></i>
+                    <button class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-transparent h-full px-3 hover:bg-gray-100" id="next-btn">
+                        <i class="fa-solid fa-circle-arrow-right text-4xl hover:text-gray-700 text-gray-600"></i>
                     </button>
                 </div>
             </div>
@@ -78,12 +88,10 @@ $announcement=[
             <?php include 'services-content.php'; ?>
 
             <!-- Upcoming Events -->
-            <div class="py-3 px-10">
-                <h1 class="text-2xl font-semibold text-gray-600 mb-2">Upcoming Events:</h1>
-                <div class="bg-white rounded-md shadow-lg p-4">
-                    <h3 class="text-lg font-semibold">Barangay-wide Meeting</h3>
-                    <p class="text-gray-600">The barangay-wide meeting is scheduled for tomorrow at 7:00 PM. Please arrive by 6:00 PM.</p>
-                    <p class="text-sm text-gray-500 mt-2">2025-01-03</p>
+            <div class="py-3">
+                <div class="bg-white rounded-md shadow-lg p-4 w-full flex-col flex items-center">
+                    <h3 class="text-lg font-semibold">© 2025 iREKLAMO+. All rights reserved.</h3>
+                    <p class="text-gray-600"><a href="https://www.facebook.com/barangay.stamonica.3"><i class="fa-brands fa-facebook"></i></a></p>
                 </div>
             </div>
         </div>
@@ -104,6 +112,10 @@ $announcement=[
         </div>
     </div>
 
+    <!-- Back to Top Button -->
+    <button id="backToTopBtn" class="fixed bottom-8 right-8 z-50 bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-full shadow-lg hover:bg-gray-900 transition-opacity duration-300 opacity-0 pointer-events-none">
+        <i class="fa fa-arrow-up"></i> Back to Top
+    </button>
 
     <script>
         function showManualForm() {
@@ -168,6 +180,21 @@ $announcement=[
             currentSlide = (currentSlide + 1) % slideCount;
             updateSlider();
         }, 5000);
+
+        // Back to Top Button Script
+        const backToTopBtn = document.getElementById('backToTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50) {
+                backToTopBtn.style.opacity = '1';
+                backToTopBtn.style.pointerEvents = 'auto';
+            } else {
+                backToTopBtn.style.opacity = '0';
+                backToTopBtn.style.pointerEvents = 'none';
+            }
+        });
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     </script>
 </body>
 </html>
