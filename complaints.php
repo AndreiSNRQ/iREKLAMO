@@ -153,7 +153,7 @@ require_once 'head.php';
                                     onclick="openViewModal(this)">
                                     <i class="fas fa-eye mr-1"></i>View
                                 </button>
-                                <!-- <button class="text-green-600 hover:text-green-900 edit-btn"
+                                <button class="text-green-600 hover:text-green-900 edit-btn"
                                     data-item='<?= htmlspecialchars(json_encode([
                                         'id' => $item['id'],
                                         'complainant' => $item['complainant'],
@@ -172,7 +172,7 @@ require_once 'head.php';
                                     onclick="openEditModal(JSON.parse(this.getAttribute('data-item')))">
                                     <i class="fas fa-edit mr-1"></i>Edit
                                 </button>
-                                <button class="text-purple-600 hover:text-purple-900 print-btn"
+                                <!-- <button class="text-purple-600 hover:text-purple-900 print-btn"
                                     data-item='<?= htmlspecialchars(json_encode([
                                         'id' => $item['id'],
                                         'complainant' => $item['complainant'],
