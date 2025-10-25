@@ -1,5 +1,31 @@
+<?php
+$summary = '';
+$error = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['complaint'])) {
+    $sentence = $_POST['complaint'];
+    $command = 'python summarize.py ' . escapeshellarg($sentence) . ' 2>&1';
+    $summary = shell_exec($command);
+    if (empty($summary) || strpos($summary, 'Traceback') !== false) {
+        $error = 'Error summarizing.';
+        $summary = '';
+    }
+}
+?>
+
+<?php if (!empty($error)): ?>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+        <?php echo $error; ?>
+    </div>
+<?php endif; ?>
+
+<?php if (!empty($summary)): ?>
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+        <strong>Summary:</strong> <?php echo htmlspecialchars($summary); ?>
+    </div>
+<?php endif; ?>
+
 <form id="complaintForm">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 min-w-[600px] w-1/2">
         <div>
             <h2 class="text-xl font-semibold text-gray-800 mb-4">Complainant's Information</h2>
             <div class="mb-4">
@@ -53,6 +79,11 @@
         <div class="mb-4">
             <label for="details" class="block text-gray-600">Details</label>
             <textarea id="details" name="details" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md" required></textarea>
+            <button type="button" id="summarizeBtn" class="mt-2 bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Summarize</button>
+            <div id="summaryContainer" class="mt-2 hidden">
+                <label class="block text-gray-600">Summarized Details</label>
+                <div id="summarizedDetails" class="bg-gray-100 p-2 rounded text-sm"></div>
+            </div>
         </div>
     </div>
 
@@ -73,3 +104,11 @@
         <button type="submit" class="bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-blue-700">Submit Complaint</button>
     </div>
 </form>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 min-w-[600px] w-1/2">
+    <form method="post" class="col-span-2">
+        <label for="complaint" class="block mb-2 font-bold">Enter Complaint:</label>
+        <textarea name="complaint" id="complaint" rows="5" cols="40" class="w-full p-2 border rounded mb-4" required></textarea>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Summarize</button>
+    </form>
+</div>

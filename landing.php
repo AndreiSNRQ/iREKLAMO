@@ -108,6 +108,9 @@ $announcement=[
                 <div class="mt-3">
                     <?php include 'complaint-form.php'; ?>
                 </div>
+                <div class="flex justify-center">
+                    <button id="summarizeBtn">Summarize</button>
+                </div>
             </div>
         </div>
     </div>
@@ -194,6 +197,34 @@ $announcement=[
         });
         backToTopBtn.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        document.getElementById('summarizeBtn').addEventListener('click', async function() {
+            const details = document.getElementById('details').value;
+            if (!details.trim()) {
+                alert('Please enter details to summarize.');
+                return;
+            }
+            // Show loading
+            const summaryDiv = document.getElementById('summarizedDetails');
+            summaryDiv.textContent = 'Summarizing...';
+            document.getElementById('summaryContainer').classList.remove('hidden');
+        
+            // GPT API call (replace with your endpoint)
+            try {
+                const response = await fetch('summarize.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: details })
+                });
+                const result = await response.json();
+                if (result.summary) {
+                    summaryDiv.textContent = result.summary;
+                } else {
+                    summaryDiv.textContent = 'Could not summarize.';
+                }
+            } catch (err) {
+                summaryDiv.textContent = 'Error summarizing.';
+            }
         });
     </script>
 </body>

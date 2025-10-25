@@ -65,20 +65,20 @@ $announcement=[
                         <h1 class="text-4xl font-bold text-white">Barangay Sta. Monica </h1><span class="text-2xl font-semibold text-white">Moises St., Jordan Plaines Subd., Brgy Sta.Monica Novaliches, QC</span>
                     </div>
                     <div class=" ml-5">
-                        <img src="pics/brgy.jpg" alt="Quezon City" class="w-full max-h-35 min-h-35 rounded-md shadow-md">
+                        <img src="pics/brgy.jpg" alt="Quezon City" class="w-full max-h-20 min-h-20   rounded-md shadow-md">
                     </div>
                 </div>
                 
             </div>
             <!-- Announcement Slider -->
-            <div class="px-20">
-                <h1 class="text-7xl font-bold mt-2 mb-2 text-black">About:</h1>
-                <div class="grid grid-cols-2 gap-10 text-2xl ">
+            <div class="px-20 py-10 h-150">
+                <h1 class="text-3xl font-bold mt-2 mb-2 text-black">About:</h1>
+                <div class="grid grid-cols-2 gap-10 text-2xl h-100">
                     <div class="flex flex-col">
-                        <span class="text-3xl text-start text-gray-400">Barangay Sta. Monica</span> <br>
-                        <h1 class="text-md shadow-lg inset-shadow-sm bg-white rounded-md p-5">Barangay Santa Monica is strategically located in the Novaliches area, forming part of the Fifth Legislative District of Quezon City. It is bounded by several other Novaliches barangays: to the north by Pasong Putik Proper, to the east by Santa Lucia and Gulod, to the south by Novaliches Proper, and to the west by Kaligayahan. This barangay is a major residential and commercial hub in its district, with key thoroughfares like Quirino Highway and parts of Mindanao Avenue running through or near it. As a relatively large barangay, it had a population of 51,834 residents as of the 2020 Census</h1>
+                        <span class="text-xl text-start text-gray-400">Barangay Sta. Monica</span> <br>
+                        <h1 class="text-lg shadow-lg inset-shadow-sm bg-white rounded-md p-5">Barangay Santa Monica is strategically located in the Novaliches area, forming part of the Fifth Legislative District of Quezon City. It is bounded by several other Novaliches barangays: to the north by Pasong Putik Proper, to the east by Santa Lucia and Gulod, to the south by Novaliches Proper, and to the west by Kaligayahan. This barangay is a major residential and commercial hub in its district, with key thoroughfares like Quirino Highway and parts of Mindanao Avenue running through or near it. As a relatively large barangay, it had a population of 51,834 residents as of the 2020 Census</h1>
                     </div>
-                    <div><img src="pics/image6.png" alt="" class="shadow-lg inset-shadow-sm w-full"></div>
+                    <div class="h-100"><img src="pics/image6.png"  alt="" class="shadow-lg inset-shadow-sm w-full"></div>
                 </div>
             </div>
 

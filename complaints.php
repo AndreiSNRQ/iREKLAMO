@@ -8,7 +8,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 require_once 'head.php';
-
 ?>
 
 <?php if (isset($_SESSION['success'])): ?>
@@ -154,7 +153,7 @@ require_once 'head.php';
                                     onclick="openViewModal(this)">
                                     <i class="fas fa-eye mr-1"></i>View
                                 </button>
-                                <button class="text-green-600 hover:text-green-900 edit-btn"
+                                <!-- <button class="text-green-600 hover:text-green-900 edit-btn"
                                     data-item='<?= htmlspecialchars(json_encode([
                                         'id' => $item['id'],
                                         'complainant' => $item['complainant'],
@@ -203,7 +202,7 @@ require_once 'head.php';
                                         'created_by' => $item['created_by']
                                     ]), ENT_QUOTES, 'UTF-8') ?>)">
                                     <i class="fas fa-print mr-1"></i>Print
-                                </button>
+                                </button> -->
                             </td>
                         </tr>
                         <?php endif; ?>

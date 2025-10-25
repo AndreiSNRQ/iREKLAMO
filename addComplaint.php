@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
 session_start();
 require_once 'config.php';
 header('Content-Type: application/json');
@@ -6,7 +8,11 @@ header('Content-Type: application/json');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         if (!isset($_SESSION['user_id'])) {
-            throw new Exception("You must be logged in to add a complaint.");
+            echo json_encode([
+                'success' => false,
+                'message' => 'You must be logged in to add a complaint.'
+            ]);
+            exit();
         }
 
         // Validate required fields

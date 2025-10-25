@@ -158,6 +158,8 @@ include 'blotterModal.php';
                 foreach($paginatedBlotters as $blotter):
                     $statusColor = [
                         'summon' => 'bg-blue-100 text-blue-800',
+                        'summon 2' => 'bg-blue-200 text-blue-800',
+                        'summon 3' => 'bg-blue-200 text-blue-800',
                         'cfa' => 'bg-red-100 text-red-800',
                         'withdraw cfa' => 'bg-red-200 text-red-900',
                         'pending' => 'bg-yellow-100 text-yellow-800',
@@ -166,6 +168,8 @@ include 'blotterModal.php';
                     ][$blotter['status']] ?? 'bg-gray-100 text-gray-800';
                     $statusName=[
                         'summon' => 'Summon',
+                        'summon 2' => 'Summon 2',
+                        'summon 3' => 'Summon 3',
                         'cfa' => 'Case File Action',
                         'pending' => 'Pending',
                         'resolved' => 'Resolved',
@@ -186,7 +190,7 @@ include 'blotterModal.php';
                     <td class="px-3 md:px-6 py-3 whitespace-nowrap text-md text-gray-500">
                         <button onclick="openViewModal(<?= $blotter['id'] ?>)" class="text-blue-600 hover:text-blue-900 mx-3"><i class="fas fa-eye mr-1"></i>View</button>
                         <button onclick="openEditModal(<?= $blotter['id'] ?>)" class="text-green-600 hover:text-green-900 mx-3"><i class="fas fa-edit mr-1"></i>Edit</button>
-                        <button onclick="openPrintModal(<?= $blotter['id'] ?>)" class="text-red-600 hover:text-red-900 mx-3"><i class="fas fa-print mr-1"></i>Print</button>
+                        <!-- <button onclick="openPrintModal(<?= $blotter['id'] ?>)" class="text-red-600 hover:text-red-900 mx-3"><i class="fas fa-print mr-1"></i>Print</button> -->
                     </td>
                 </tr>
                 <?php endforeach; ?>
